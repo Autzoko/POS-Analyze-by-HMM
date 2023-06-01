@@ -1,5 +1,6 @@
 import json
 from utils import viterbi
+from tqdm import trange, tqdm
 
 
 class Evaluator:
@@ -30,11 +31,11 @@ class Evaluator:
                     self.pos.add(p)
                 self.sentences.append(sentence)
                 self.total += len(pos_map)
-                print(self.total)
                 self.pos_maps.append(pos_map)
         self._predict()
 
     def _predict(self):
+        print("--Start Prediction---")
         with open(self.init_vec_path, encoding='utf-8') as f:
             init_vec = json.load(f)
         with open(self.transition_path, encoding='utf-8') as f:
@@ -42,10 +43,10 @@ class Evaluator:
         with open(self.emission_path, encoding='utf-8') as f:
             emission = json.load(f)
 
-        for sentence in self.sentences:
+        for sentence in tqdm(self.sentences, desc="Predicting"):
             path = viterbi(init_vec, transition, emission, sentence)
-            print(sentence)
-            print(path)
+            # print(sentence)
+            # print(path)
             self.results.append(path)
 
     def _cal_precision(self):
@@ -74,20 +75,21 @@ class Evaluator:
         self.recall = recall
 
     def _cal_f1(self):
-        pass
+        self.f1 = 2 * self.precision * self.recall / (self.precision + self.recall)
 
     def get_precision(self):
         self._cal_precision()
-        print(f'Precision is {self.precision}')
+        print(f'Precision Score is {self.precision}')
         return self.precision
 
     def get_recall(self):
         self._cal_recall()
-        print(f'Recall is {self.recall}')
+        print(f'Recall Score is {self.recall}')
         return self.recall
 
     def get_f1(self):
-        pass
+        self._cal_f1()
+        print(f'F-1 Score is {self.f1}')
 
 
 
