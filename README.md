@@ -1,4 +1,4 @@
-# Part of Speech Analysis by Hidden Markov Model
+# Part of Speech Analysis Based on Hidden Markov Model
 This program is a demo of implementing **Part of Speech Analysis
 by Hidden Markov Model**. The database is preprocessed Remin Daily corpus which
 save as JSON file.
