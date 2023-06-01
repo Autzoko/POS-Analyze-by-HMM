@@ -66,12 +66,12 @@ class Evaluator:
             for pos_map, result in zip(self.pos_maps, self.results):
                 for _p, p_pred in zip(pos_map, result):
                     if _p == p:
-                        p_len += 1
+                        # p_len += 1
                         if _p == p_pred:
                             tp += 1
                         else:
                             fn += 1
-            recall += ((tp / (tp + fn)) * (p_len / self.total))
+            recall += ((tp / (tp + fn)) / len(self.pos))
         self.recall = recall
 
     def _cal_f1(self):
@@ -79,17 +79,15 @@ class Evaluator:
 
     def get_precision(self):
         self._cal_precision()
-        print(f'Precision Score is {self.precision}')
         return self.precision
 
     def get_recall(self):
         self._cal_recall()
-        print(f'Recall Score is {self.recall}')
         return self.recall
 
     def get_f1(self):
         self._cal_f1()
-        print(f'F-1 Score is {self.f1}')
+        return self.f1
 
 
 

@@ -18,9 +18,6 @@ def main():
 
     parser.add_argument("--sentence", type=str, required=True if args.test == True else False)
 
-
-
-
     if args.train:
         model = HiddenMarkovModelTrainer(args.data, args.save_path)
         model.train()
@@ -51,6 +48,10 @@ def main():
         evaluator = eval.Evaluator('./data/pos_test.json', args)
         precision = evaluator.get_precision()
         recall = evaluator.get_recall()
+        f1 = evaluator.get_f1()
+        print("---The PRF Matrics---")
+        print("|\tPrecision Score\t|\tRecall Score\t|\tF-1 Score\t|")
+        print("|\t{:.4f}\t\t|\t{:.4f}\t\t|\t{:.4f}\t\t|".format(precision, recall, f1))
 
 
 if __name__ == '__main__':
